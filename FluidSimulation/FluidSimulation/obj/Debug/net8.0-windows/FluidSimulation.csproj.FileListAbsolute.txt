@@ -1,0 +1,16 @@
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\bin\Debug\net8.0-windows\FluidSimulation.exe
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\bin\Debug\net8.0-windows\FluidSimulation.deps.json
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\bin\Debug\net8.0-windows\FluidSimulation.runtimeconfig.json
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\bin\Debug\net8.0-windows\FluidSimulation.dll
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\bin\Debug\net8.0-windows\FluidSimulation.pdb
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\obj\Debug\net8.0-windows\FluidSimulation.Form1.resources
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\obj\Debug\net8.0-windows\FluidSimulation.csproj.GenerateResource.cache
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\obj\Debug\net8.0-windows\FluidSimulation.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\obj\Debug\net8.0-windows\FluidSimulation.AssemblyInfoInputs.cache
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\obj\Debug\net8.0-windows\FluidSimulation.AssemblyInfo.cs
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\obj\Debug\net8.0-windows\FluidSimulation.csproj.CoreCompileInputs.cache
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\obj\Debug\net8.0-windows\FluidSimulation.dll
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\obj\Debug\net8.0-windows\refint\FluidSimulation.dll
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\obj\Debug\net8.0-windows\FluidSimulation.pdb
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\obj\Debug\net8.0-windows\FluidSimulation.genruntimeconfig.cache
+C:\Users\ryanf\source\repos\FluidSimulation\FluidSimulation\obj\Debug\net8.0-windows\ref\FluidSimulation.dll
