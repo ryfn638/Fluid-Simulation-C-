@@ -1,42 +1,31 @@
+using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 
 namespace FluidSimulation
 {
 
-    public class Main(string[] args)
-    {
-        public const float gravity = 9.8f;
-        // We can add on the viscosity force later, but at the moment viscosity wont be included.
-        // Next to do
-        // Add boundaries
-        // Hash keys
-        // Complete Pipeline
-        // Optimisations
-        // - Spatial Hashing
-        // - Precalculate each particle's density beforehand
-        
-    }
-
-    public class Particle : KernelFunctions
+    public class Particle : ParticleProperties
     {
         // Particle class that contains the essential componenets for each particles
 
         // Fluid Variables
         public float density;
         public float pressure;
+        public Vector2 pressureVector;
         public float smoothing_radius;
+        public int visual_radius;
 
         // Arbitrary at the moment until i decide to implement more shite
         public float mass = 1;
 
         // Positional Variables
         // X and Y vectors for the velocity and acceleration vectors
-        public float[] velocity;
-        public float[] vectors;
-        public float[] position;
+        public Vector2 velocity;
+        public Vector2 vectors;
+        public Vector2 position;
     }
 
-    public class ParticleProperties : Particle
+    public class ParticleProperties : KernelFunctions
     {
         private float sharedPressureValue(Particle particleA, Particle particleB)
         {
@@ -49,7 +38,7 @@ namespace FluidSimulation
         }
 
 
-        private float CalculateDensity(Particle[] all_particles, Particle mainParticle)
+        public float CalculateDensity(Particle[] all_particles, Particle mainParticle)
         {
             float total_density = 0;
             for (int i = 0; i< all_particles.Length; i++)
@@ -67,7 +56,7 @@ namespace FluidSimulation
 
 
         // Getting the pressure
-        private float CalculatePressureFromDensity(float density)
+        public float CalculatePressureFromDensity(float density)
         {
             // Tuneable coefficients
             float rest_density = 1.5f;
@@ -76,9 +65,9 @@ namespace FluidSimulation
         }
 
         // Calulcate the force as a result of pressure
-        private float[] CalculatePressureForce(Particle[] all_particles, Particle mainParticle)
+        public Vector2 CalculatePressureForce(Particle[] all_particles, Particle mainParticle)
         {
-            float[] vector = new float[2];
+            Vector2 vector = new Vector2();
 
             for (int i = 0; i < all_particles.Length; i++)
             {
@@ -86,11 +75,11 @@ namespace FluidSimulation
 
 
                 // x - y direction vectors
-                float[] direction = mainParticle.position.Zip(compared_particle.position, (x, y) => x - y).ToArray();
+                Vector2 direction = mainParticle.position - compared_particle.position;
 
                 // Unit vector for direction
                 float distance = EuclideanDistance(compared_particle, mainParticle);
-                direction = direction.Select(x => x/distance).ToArray();
+                direction = direction / distance;
 
                 // Working out the pressure of the two points, Newtons third law ensure that pressures are equivalent
                 mainParticle.pressure = sharedPressureValue(compared_particle, mainParticle);
@@ -99,10 +88,9 @@ namespace FluidSimulation
                 float kernel_output = GradKernelFunction(distance, mainParticle.smoothing_radius);
                 float scaling = coeff * kernel_output;
 
-                direction = direction.Select(x => x * scaling).ToArray();
-
+                direction = direction * scaling;
                 // Add on the vector
-                vector = vector.Zip(direction, (x, y) => x + y).ToArray();
+                vector += vector + direction;
             }
             // Return summation of all forces.
             return vector;
