@@ -1,5 +1,7 @@
-using System.Numerics;
+﻿using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.Intrinsics;
+using System.Security.Policy;
 
 namespace FluidSimulation
 {
@@ -11,7 +13,7 @@ namespace FluidSimulation
         // Fluid Variables
         public float density;
         public float pressure;
-        public Vector2 pressureVector;
+        public Vector2 pressureVector = new Vector2(0,0);
         public float smoothing_radius;
         public int visual_radius;
 
@@ -59,8 +61,8 @@ namespace FluidSimulation
         public float CalculatePressureFromDensity(float density)
         {
             // Tuneable coefficients
-            float rest_density = 1.5f;
-            float pressureMultiplier = 1f;
+            float rest_density = 0.8f;
+            float pressureMultiplier = 10f;
             return pressureMultiplier * (rest_density - density);
         }
 
@@ -68,7 +70,6 @@ namespace FluidSimulation
         public Vector2 CalculatePressureForce(Particle[] all_particles, Particle mainParticle)
         {
             Vector2 vector = new Vector2();
-
             for (int i = 0; i < all_particles.Length; i++)
             {
                 Particle compared_particle = all_particles[i];
@@ -77,8 +78,13 @@ namespace FluidSimulation
                 // x - y direction vectors
                 Vector2 direction = mainParticle.position - compared_particle.position;
 
-                // Unit vector for direction
+                // Unit vector for direction, maybe can precalculate this as well
                 float distance = EuclideanDistance(compared_particle, mainParticle);
+
+                if (distance == 0)
+                {
+                    continue;
+                }
                 direction = direction / distance;
 
                 // Working out the pressure of the two points, Newtons third law ensure that pressures are equivalent
@@ -90,8 +96,12 @@ namespace FluidSimulation
 
                 direction = direction * scaling;
                 // Add on the vector
-                vector += vector + direction;
+                vector += direction;
+
+
+
             }
+            // System.Diagnostics.Debug.WriteLine(vector);
             // Return summation of all forces.
             return vector;
         }
@@ -101,7 +111,7 @@ namespace FluidSimulation
         public float EuclideanDistance(Particle particleA, Particle particleB)
         {
             // long ass line of code but its just euclidean dist between 2 points.
-            return (float)Math.Sqrt(Math.Pow(particleA.position[0] - particleB.position[0], 2) + Math.Pow(particleA.position[1] - particleB.position[1], 2));
+            return (float)Vector2.Distance(particleA.position, particleB.position);
         }
     }
 }

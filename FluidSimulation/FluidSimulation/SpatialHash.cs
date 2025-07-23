@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 
 namespace FluidSimulation
 {
@@ -9,6 +10,7 @@ namespace FluidSimulation
         // [min_x, max_x, min_y, max_y]
         double cell_size;
         int num_y_cells;
+        int num_x_cells;
 
         int grid_Height;
         int grid_Width;
@@ -25,6 +27,7 @@ namespace FluidSimulation
 
             int num_x_cells = (int)(width / this.cell_size);
             this.num_y_cells = (int)(height / this.cell_size);
+            this.num_x_cells = (int)(width / this.cell_size);
 
             // In the flattened array the length will be num_x_cells * num_y_cells
             int total_cells = num_y_cells * this.num_y_cells;
@@ -46,6 +49,7 @@ namespace FluidSimulation
                 Particle current_particle = all_particles[i];
 
                 int getCellIndex = GetHash_Position(current_particle.position);
+                
                 spatial_hash[getCellIndex].Add(current_particle);
             }
 
@@ -62,7 +66,7 @@ namespace FluidSimulation
 
             // In 3D this becomes
             // index = (x_hash * num_y_cells + y_hash) * num_z_cells + z_hash
-
+            // System.Diagnostics.Debug.WriteLine(y_hash);
             // Return the hash position
             return index;
         }
@@ -82,14 +86,14 @@ namespace FluidSimulation
             {
                 for (int x_neighbor = -1; x_neighbor <= 1  ; x_neighbor++)
                 {
-                    if (x_neighbor < 0 || y_neighbor < 0 || x_neighbor >= this.grid_Width|| y_neighbor >= this.grid_Height)
+                    if (hash_x + x_neighbor < 0 || hash_y + y_neighbor < 0 || hash_x + x_neighbor >= this.num_x_cells || hash_y + y_neighbor >= this.num_y_cells)
                         continue;
 
-                    int neighbor_x_idx = (int)Math.Floor(hash_x + x_neighbor / this.cell_size);
-                    int neighbor_y_idx = (int)Math.Floor(hash_y + y_neighbor / this.cell_size);
+                    int neighbor_x_idx = hash_x + x_neighbor;
+                    int neighbor_y_idx = hash_y + y_neighbor;
 
-                    int neighborIndex = neighbor_y_idx * this.grid_Width + neighbor_x_idx;
 
+                    int neighborIndex = neighbor_y_idx * this.num_y_cells + neighbor_x_idx;
                     neighbors.AddRange(this.spatial_hash[neighborIndex]);
                 }
             }

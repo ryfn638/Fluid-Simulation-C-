@@ -1,3 +1,5 @@
+using System.Security.Policy;
+
 namespace FluidSimulation
 {
     public class KernelFunctions()
@@ -29,6 +31,7 @@ namespace FluidSimulation
             double normalise_constant = 12 / (Math.Pow(smoothing_radius, 4) * float.Pi);
             // Normalised Distance
             double q = distance / smoothing_radius;
+            
 
             if (q > 1)
             {
