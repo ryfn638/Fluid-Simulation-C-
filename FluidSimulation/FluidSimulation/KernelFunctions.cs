@@ -44,5 +44,20 @@ namespace FluidSimulation
             }
 
         }
+
+        public float LaplaceKernelFunction(float distance, float smoothing_radius)
+        {
+            if (distance == 0)
+            {
+                distance = 1e-5f;
+            }
+
+            double normalise_constant = 12 / (Math.Pow(smoothing_radius, 4) * float.Pi);
+            double q = distance / smoothing_radius;
+
+            return (float)((-8 / smoothing_radius) + 16 * (Math.Pow(smoothing_radius, 2)) / (Math.Pow(smoothing_radius, 2)));
+
+
+        }
     }
 }
